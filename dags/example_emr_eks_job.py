@@ -27,7 +27,7 @@ from airflow.utils.dates import days_ago
 # [START howto_operator_emr_eks_env_variables]
 VIRTUAL_CLUSTER_ID = "iy2lb99tr6pd1fepo2xxiyyau"
 JOB_ROLE_ARN = "arn:aws:iam::318897785936:role/emr-on-eks-nvme-execution-role"
-# [END howto_operator_emr_eks_env_variables]
+# [END howto_operator_emr_eks_env_variables]""
 
 
 # [START howto_operator_emr_eks_config]
