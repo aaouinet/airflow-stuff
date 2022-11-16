@@ -19,6 +19,25 @@ kubectl get namespaces
 ```Powershell
 helm show values apache-airflow/airflow > values.yaml
 
+enable git sync configutation : 
+  gitSync:
+    enabled: true
+
+    # git repo clone url
+    # ssh examples ssh://git@github.com/apache/airflow.git
+    # git@github.com:apache/airflow.git
+    # https example: https://github.com/apache/airflow.git
+    repo: https://github.com/aaouinet/airflow-stuff.git
+    branch: main
+    rev: HEAD
+    depth: 1
+    # the number of consecutive failures allowed before aborting
+    maxFailures: 0
+    # subpath within the repo where dags are located
+    # should be "" if dags are at repo root
+    subPath: "dags"
+
+
 cd deployment
 
 az acr login --name $ACR_URL
