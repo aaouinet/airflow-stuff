@@ -30,7 +30,7 @@ with DAG(
     dagrun_timeout=timedelta(hours=2),
     start_date=days_ago(1),
     schedule_interval="@once",
-    tags=["spark_containers", "example"],
+    tags=["spark_application", "example"],
 ) as dag:
 
 
