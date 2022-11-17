@@ -39,7 +39,7 @@ enable git sync configutation :
 
 
 cd deployment
-
+$ACR_URL="airflowjarvis.azurecr.io"
 az acr login --name $ACR_URL
 
 docker build -t $ACR_URL/airflow-custom:1.0.0 .
