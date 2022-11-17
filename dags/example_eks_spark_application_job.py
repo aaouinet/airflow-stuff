@@ -39,7 +39,7 @@ with DAG(
         task_id='spark_pi_submit',
         namespace="spark-operator",
         kubernetes_conn_id="eks_poc_cluster",
-        application_file="/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml", #officially know bug
+        application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #officially know bug
         do_xcom_push=True,
         dag=dag
         )
