@@ -39,7 +39,7 @@ with DAG(
         task_id='spark_sample',
         namespace="oss",
         kubernetes_conn_id="eks_poc_cluster",
-        application_file="/opt/airflow/dags/repo/dags/sparkApplications/airflow.yaml",
+        application_file="/opt/airflow/dags/repo/dags/sparkApplications/sparkPi.yaml",
         do_xcom_push=True,
         dag=dag
         )
