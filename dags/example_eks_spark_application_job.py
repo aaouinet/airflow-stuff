@@ -26,7 +26,7 @@ from airflow.utils.dates import days_ago
 
 
 with DAG(
-    dag_id='spark_job_example',
+    dag_id='spark_application_eks_pi_job',
     dagrun_timeout=timedelta(hours=2),
     start_date=days_ago(1),
     schedule_interval="@once",
@@ -36,10 +36,10 @@ with DAG(
 
     # [START SparkKubernetesOperator]
         SparkKubernetesOperator(
-        task_id='spark_sample',
-        namespace="oss",
+        task_id='spark_pi_submit',
+        namespace="spark-operator",
         kubernetes_conn_id="eks_poc_cluster",
-        application_file="/opt/airflow/dags/repo/dags/sparkApplications/sparkPi.yaml",
+        application_file="/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml", #officially know bug
         do_xcom_push=True,
         dag=dag
         )
