@@ -58,7 +58,7 @@ with DAG(
         task_id='spark_pi_submit',
         namespace="default",
         kubernetes_conn_id="eks_poc_cluster",
-        application_file="sparkApplication/example_spark_kubernetes_spark_pi.yaml",
+        application_file=open("sparkApplication/example_spark_kubernetes_spark_pi.yaml").read(), #officially know bug
         do_xcom_push=True,
         dag=dag,
     )
