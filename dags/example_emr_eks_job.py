@@ -21,7 +21,7 @@ import os
 from datetime import timedelta
 
 from airflow import DAG
-from airflow.providers.amazon.aws.operators.emr_containers import EMRContainerOperator
+from airflow.providers.amazon.aws.operators.emr import EMRContainerOperator
 from airflow.utils.dates import days_ago
 
 # [START howto_operator_emr_eks_env_variables]
