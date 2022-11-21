@@ -1,27 +1,36 @@
 apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
-  name: spark-pi
-  namespace: spark-operator
+  name: spark-sample
 spec:
   type: Scala
   mode: cluster
-  image: "mesosphere/spark:spark-3.0.0-hadoop-2.9-k8s"
+  # aws image: 318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-benchmark
+  # azure image: 318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-benchmark
+  image: '{{dag_run.conf["image"]}}'
   imagePullPolicy: Always
   mainClass: org.apache.spark.examples.SparkPi
-  mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.0.0.jar"
-  sparkVersion: "3.0.0"
+  mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.3.1.jar"
+  sparkVersion: "3.3.1"
   restartPolicy:
     type: Never
   driver:
     cores: 1
     memory: "512m"
     labels:
-      version: 3.0.0
-    serviceAccount: spark-spark-service-account
-  executor:
+      version: 3.3.1
+    serviceAccount: spark
     cores: 1
-    instances: 2
     memory: "512m"
     labels:
-      version: 3.0.0
+      version: 3.3.1
+  executor:
+    cores: 1
+    memory: "512m"
+    labels:
+      version: 3.3.1
+    serviceAccount: spark
+    cores: 1
+    memory: "512m"
+    labels:
+      version: 3.3.1
