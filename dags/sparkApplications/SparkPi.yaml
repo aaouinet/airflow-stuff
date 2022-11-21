@@ -6,7 +6,7 @@ spec:
   type: Scala
   mode: cluster
   # aws image: 318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-benchmark
-  # azure image: 318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-benchmark
+  # azure image: airflowjarvis.azurecr.io/spark:3.3.1
   image: '{{dag_run.conf["image"]}}'
   imagePullPolicy: Always
   mainClass: org.apache.spark.examples.SparkPi
