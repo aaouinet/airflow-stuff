@@ -61,7 +61,7 @@ with DAG(
     # JOB_ROLE_ARN = '{{ conn.emr_eks.extra_dejson["job_role_arn"] }}'
 
     # [START howto_operator_emr_eks_jobrun]
-    job_starter = EMRContainerOperator(
+    job_starter = EmrContainerOperator(
         task_id="start_job",
         virtual_cluster_id=VIRTUAL_CLUSTER_ID,
         execution_role_arn=JOB_ROLE_ARN,
