@@ -24,26 +24,27 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.utils.dates import days_ago
 
-with DAG(
-    dag_id='spark_generic_job1',
+dag = DAG(
+    dag_id='spark_generic_job',
     dagrun_timeout=timedelta(hours=2),
     start_date=days_ago(1),
     schedule_interval="@once",
     tags=["spark_application", "example"],
-) as dag:
+    catchup=False
+) 
 
-      # Get values from dag run configuration
-        cluster="{{ dag_run.conf['cluster'] }}"
-        namespace="{{ dag_run.conf['namespace'] }}"
-        
-    # [START SparkKubernetesOperator]
-        SparkKubernetesOperator(
-        task_id='spark_pi_submit',
-        namespace=namespace,
-        kubernetes_conn_id=cluster,
-        application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
-        do_xcom_push=True,
-        dag=dag
-        )
+# Get values from dag run configuration
+cluster="{{ dag_run.conf['cluster'] }}"
+namespace="{{ dag_run.conf['namespace'] }}"
+
+# [START SparkKubernetesOperator]
+SparkKubernetesOperator(
+    task_id='spark_pi_submit',
+    namespace=namespace,
+    kubernetes_conn_id=cluster,
+    application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
+    do_xcom_push=True,
+    dag=dag
+)
 
     # [END SparkKubernetesOperator]
