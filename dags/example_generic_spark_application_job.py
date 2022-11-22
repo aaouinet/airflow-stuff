@@ -24,6 +24,9 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.utils.dates import days_ago
 
+# Get values from dag run configuration
+cluster="{{ dag_run.conf['cluster'] }}"
+namespace="{{ dag_run.conf['namespace'] }}"
 
 with DAG(
     dag_id='spark_generic_job',
@@ -33,9 +36,6 @@ with DAG(
     tags=["spark_application", "example"],
 ) as dag:
 
-# Get values from dag run configuration
-cluster="{{ dag_run.conf['cluster'] }}"
-namespace="{{ dag_run.conf['namespace'] }}"
         
     # [START SparkKubernetesOperator]
         SparkKubernetesOperator(
