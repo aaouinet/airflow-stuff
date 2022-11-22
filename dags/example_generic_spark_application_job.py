@@ -37,8 +37,8 @@ with DAG(
     # [START SparkKubernetesOperator]
         SparkKubernetesOperator(
         task_id='spark_pi_submit',
-        namespace="{{ dag_run.conf['namespace'] }}",
-        kubernetes_conn_id="{{ dag_run.conf['eks_cluster'] }}",
+        namespace='{{ dag_run.conf["namespace"] }}',
+        kubernetes_conn_id='{{ dag_run.conf["cluster"] }}',
         application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
         do_xcom_push=True,
         dag=dag
