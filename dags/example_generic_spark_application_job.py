@@ -63,6 +63,7 @@ dag = DAG(
 # Get values from dag run configuration
 cluster="{{ dag_run.conf['cluster'] }}"
 namespace="{{ dag_run.conf['namespace'] }}"
+image="{{ dag_run.conf['image'] }}"
 
 
 # Step 1
@@ -70,9 +71,9 @@ check_dag_input = PythonOperator(
     task_id='check_dag_input',
     python_callable=check_dag_input,
     op_kwargs={
-        'cluster_id': "{{ dag_run.conf['cluster_id'] }}",
-        'image': "{{ dag_run.conf['image'] }}",
-        'namespace': "{{ dag_run.conf['namespace'] }}"
+        'cluster_id': cluster,
+        'image': image,
+        'namespace': namespace
     },
     dag=dag
 )
@@ -81,8 +82,8 @@ check_dag_input = PythonOperator(
 # [START SparkKubernetesOperator]
 SparkKubernetesOperator(
     task_id='spark_pi_submit',
-    namespace="{{ dag_run.conf['namespace'] }}",
-    kubernetes_conn_id="{{ dag_run.conf['cluster_id'] }}",
+    namespace="{{ namespace }}",
+    kubernetes_conn_id="{{ cluster }}",
     application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
     do_xcom_push=True,
     dag=dag
