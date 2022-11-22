@@ -7,7 +7,7 @@ spec:
   mode: cluster
   # aws image: 318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test
   # azure image: airflowjarvis.azurecr.io/spark:3.3.1-test
-  image: "{{ Variable.get("job_settings", deserialize_json=True)['image'] }}"
+  image: "{{ var.json.job_settings.job_settings }}"
   imagePullPolicy: Always
   mainClass: org.apache.spark.examples.SparkPi
   mainApplicationFile: "local:///usr/lib/spark/examples/jars/spark-examples.jar"
