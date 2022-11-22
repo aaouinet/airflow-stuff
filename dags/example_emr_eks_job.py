@@ -32,19 +32,31 @@ JOB_ROLE_ARN = "arn:aws:iam::318897785936:role/emr-on-eks-nvme-execution-role"
 
 # [START howto_operator_emr_eks_config]
 JOB_DRIVER_ARG = {
-    "sparkSubmitJobDriver": {
-        "entryPoint": "local:///usr/lib/spark/examples/src/main/python/pi.py",
-        "sparkSubmitParameters": "--conf spark.executors.instances=2 --conf spark.executors.memory=2G --conf spark.executor.cores=2 --conf spark.driver.cores=1",  # noqa: E501
+    "sparkSubmitJobDriver": {   
+      "entryPoint": "local:///opt/spark/examples/jars/spark-examples_2.12-3.3.1.jar",
+      "sparkSubmitParameters": "--class org.apache.spark.examples.SparkPi "
     }
 }
 
 CONFIGURATION_OVERRIDES_ARG = {
-    "monitoringConfiguration": {
-        "cloudWatchMonitoringConfiguration": {
-            "logGroupName": "/aws/emr-eks-spark",
-            "logStreamNamePrefix": "airflow",
+      "applicationConfiguration": [
+        {
+          "classification": "spark-defaults", 
+          "properties": {
+            "spark.kubernetes.container.image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-benchmark",
+            "spark.driver.core": "1",
+            "spark.driver.memory": "512m",
+            "spark.executor.cores": "1",
+            "spark.executor.memory": "512m",
+            "spark.executor.instances": "1",
+            "spark.executor.defaultJavaOptions": "-verbose:gc -XX:+UseParallelGC -XX:InitiatingHeapOccupancyPercent=70"  }
         }
-    },
+      ], 
+      "monitoringConfiguration": {
+        "s3MonitoringConfiguration": {
+          "logUri": "s3://emr-on-eks-nvme-318897785936-eu-west-1/logs/airflow"
+        }
+      }
 }
 # [END howto_operator_emr_eks_config]
 
@@ -71,3 +83,4 @@ with DAG(
         name="pi.py",
     )
     # [END howto_operator_emr_eks_jobrun]
+
