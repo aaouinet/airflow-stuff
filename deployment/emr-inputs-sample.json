@@ -1,0 +1,32 @@
+{
+    "name": "emr-eks-sample", 
+    "virtualClusterId": "iy2lb99tr6pd1fepo2xxiyyau", 
+    "executionRoleArn": "arn:aws:iam::318897785936:role/emr-on-eks-nvme-execution-role", 
+    "releaseLabel": "emr-6.8.0-latest",
+    "jobDriver": {
+      "sparkSubmitJobDriver": {   
+      "entryPoint": "local:///usr/lib/spark/examples/jars/spark-examples.jar",
+      "sparkSubmitParameters": "--class org.apache.spark.examples.SparkPi  "
+       }
+    }, 
+    "configurationOverrides": {
+      "applicationConfiguration": [
+        {
+          "classification": "spark-defaults", 
+          "properties": {
+            "spark.kubernetes.container.image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/eks-spark-benchmark:emr6.8",
+            "spark.driver.core": "1",
+            "spark.driver.memory": "512m",
+            "spark.executor.cores": "1",
+            "spark.executor.memory": "512m",
+            "spark.executor.instances": "1",
+            "spark.executor.defaultJavaOptions": "-verbose:gc -XX:+UseParallelGC -XX:InitiatingHeapOccupancyPercent=70"  }
+        }
+      ], 
+      "monitoringConfiguration": {
+        "s3MonitoringConfiguration": {
+          "logUri": "s3://emr-on-eks-nvme-318897785936-eu-west-1/logs/airflow"
+        }
+      }
+    }
+  }

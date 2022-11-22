@@ -33,8 +33,8 @@ JOB_ROLE_ARN = "arn:aws:iam::318897785936:role/emr-on-eks-nvme-execution-role"
 # [START howto_operator_emr_eks_config]
 JOB_DRIVER_ARG = {
     "sparkSubmitJobDriver": {   
-      "entryPoint": "local:///opt/spark/examples/jars/spark-examples_2.12-3.3.1.jar",
-      "sparkSubmitParameters": "--class org.apache.spark.examples.SparkPi "
+      "entryPoint": "local:///usr/lib/spark/examples/jars/spark-examples.jar",
+      "sparkSubmitParameters": "--class org.apache.spark.examples.SparkPi"
     }
 }
 
@@ -43,7 +43,7 @@ CONFIGURATION_OVERRIDES_ARG = {
         {
           "classification": "spark-defaults", 
           "properties": {
-            "spark.kubernetes.container.image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-benchmark",
+            "spark.kubernetes.container.image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/eks-spark-benchmark:emr6.8",
             "spark.driver.core": "1",
             "spark.driver.memory": "512m",
             "spark.executor.cores": "1",
