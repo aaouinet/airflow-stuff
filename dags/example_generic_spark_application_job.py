@@ -22,7 +22,34 @@ from datetime import timedelta
 
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
+from airflow.operators import PythonOperator
 from airflow.utils.dates import days_ago
+
+
+# check dag inputs:
+# - cluster and image : should not be empty
+def check_dag_input(cluster_id, image, namespace):
+    """
+    Check dag inputs.
+    :param cluster_id: cluster_id object
+    :param image: image object
+    :param namespace: namespace object
+    :return: check status 
+    """
+
+    print("cluster_id: "+cluster_id)
+    print("image: "+image)
+    try:
+       if(len(cluster_id) == 0 or len(image) == 0):
+            raise Exception('cluster_id and image should not be empty')
+    except:
+        print("failed to check dag input") 
+        print('cluster_id and image should not be empty')
+        sys.exit(1)
+    finally:
+        print("input checked") 
+       
+        
 
 dag = DAG(
     dag_id='spark_generic_job',
@@ -36,6 +63,20 @@ dag = DAG(
 # Get values from dag run configuration
 cluster="{{ dag_run.conf['cluster'] }}"
 namespace="{{ dag_run.conf['namespace'] }}"
+
+
+# Step 1
+check_dag_input = PythonOperator(
+    task_id='check_dag_input',
+    python_callable=check_dag_input,
+    op_kwargs={
+        'cluster_id': "{{ dag_run.conf['cluster_id'] }}",
+        'image': "{{ dag_run.conf['image'] }}",
+        'namespace': "{{ dag_run.conf['namespace'] }}"
+    },
+    dag=dag
+)
+
 
 # [START SparkKubernetesOperator]
 SparkKubernetesOperator(
