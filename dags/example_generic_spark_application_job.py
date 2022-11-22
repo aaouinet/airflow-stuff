@@ -61,9 +61,9 @@ dag = DAG(
 ) 
 
 # Get values from dag run configuration
-cluster="{{dag_run.conf['cluster']}}"
-namespace="{{dag_run.conf['namespace']}}"
-image="{{dag_run.conf['image']}}"
+cluster={{dag_run.conf['cluster']}}
+namespace={{dag_run.conf['namespace']}}
+image={{dag_run.conf['image']}}
 
 
 # Step 1
