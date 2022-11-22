@@ -24,6 +24,20 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
+from airflow.models import Variable
+import json
+
+
+# Get values from dag run configuration
+# cluster="{{dag_run.conf['cluster']}}"
+# namespace="{{dag_run.conf['namespace']}}"
+# image="{{dag_run.conf['image']}}"
+
+job_settings = Variable.get("job_settings", deserialize_json=True)
+
+cluster = job_settings['cluster']
+image = job_settings['image']
+namespace = job_settings['namespace']
 
 
 # check dag inputs:
@@ -49,10 +63,7 @@ def check_dag_input(cluster_id, image, namespace):
     finally:
         print("input checked") 
        
-# Get values from dag run configuration
-cluster="{{dag_run.conf['cluster']}}"
-namespace="{{dag_run.conf['namespace']}}"
-image="{{dag_run.conf['image']}}"
+
 
 
 dag = DAG(
