@@ -25,6 +25,11 @@ from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKu
 from airflow.utils.dates import days_ago
 
 
+# Get values from dag run configuration
+cluster_connection = "{{ dag_run.conf['cluster'] }}"
+namespace = "{{ dag_run.conf['namespace'] }}"
+
+
 with DAG(
     dag_id='spark_generic_job',
     dagrun_timeout=timedelta(hours=2),
@@ -37,8 +42,8 @@ with DAG(
     # [START SparkKubernetesOperator]
         SparkKubernetesOperator(
         task_id='spark_pi_submit',
-        namespace='{{ dag_run.conf["namespace"] }}',
-        kubernetes_conn_id='{{ dag_run.conf["cluster"] }}',
+        namespace=cluster_connection,
+        kubernetes_conn_id=namespace,
         application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
         do_xcom_push=True,
         dag=dag
