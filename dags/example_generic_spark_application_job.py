@@ -49,7 +49,11 @@ def check_dag_input(cluster_id, image, namespace):
     finally:
         print("input checked") 
        
-        
+# Get values from dag run configuration
+cluster="{{dag_run.conf['cluster']}}"
+namespace="{{dag_run.conf['namespace']}}"
+image="{{dag_run.conf['image']}}"
+
 
 dag = DAG(
     dag_id='spark_generic_job',
@@ -57,13 +61,11 @@ dag = DAG(
     start_date=days_ago(1),
     schedule_interval="@once",
     tags=["spark_application", "example"],
+    params={
+        "cluster_id": cluster
+    },
     catchup=False
 ) 
-
-# Get values from dag run configuration
-cluster={{dag_run.conf['cluster']}}
-namespace={{dag_run.conf['namespace']}}
-image={{dag_run.conf['image']}}
 
 
 # Step 1
@@ -83,7 +85,7 @@ check_dag_input = PythonOperator(
 SparkKubernetesOperator(
     task_id='spark_pi_submit',
     namespace=namespace,
-    kubernetes_conn_id=cluster,
+    kubernetes_conn_id={{ params.cluster_id }},
     application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
     do_xcom_push=True,
     dag=dag
