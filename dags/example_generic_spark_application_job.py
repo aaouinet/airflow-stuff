@@ -33,14 +33,14 @@ import json
 # namespace="{{dag_run.conf['namespace']}}"
 # image="{{dag_run.conf['image']}}"
 
-job_settings = Variable.get("job_settings", deserialize_json=True)
+job_settings = Variable.get("job_settings")
 
 print("##### job settings")
 print (job_settings)
 
-cluster = job_settings['cluster']
-image = job_settings['image']
-namespace = job_settings['namespace']
+cluster = job_settings.cluster
+image = job_settings.image
+namespace = job_settings.namespace
 
 
 # check dag inputs:
@@ -70,7 +70,7 @@ def check_dag_input(cluster_id, image, namespace):
 
 
 dag = DAG(
-    dag_id='spark_generic_job',
+    dag_id='spark_generic_template_job',
     dagrun_timeout=timedelta(hours=2),
     start_date=days_ago(1),
     schedule_interval="@once",
