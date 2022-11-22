@@ -35,6 +35,10 @@ import json
 
 job_settings = Variable.get("job_settings", deserialize_json=True)
 
+print("##### job settings")
+print (job_settings)
+print (type(job_settings))
+
 cluster = job_settings['cluster']
 image = job_settings['image']
 namespace = job_settings['namespace']
