@@ -85,7 +85,7 @@ check_dag_input = PythonOperator(
 SparkKubernetesOperator(
     task_id='spark_pi_submit',
     namespace=namespace,
-    kubernetes_conn_id={{ params.cluster_id }},
+    kubernetes_conn_id="{{ params.cluster_id }}",
     application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
     do_xcom_push=True,
     dag=dag
