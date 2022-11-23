@@ -45,7 +45,8 @@ print (job_settings)
 cluster = job_settings["cluster"]
 image = job_settings["image"]
 namespace = job_settings["namespace"]
-
+mainApplicationFile = job_settings["mainApplicationFile"]
+mainClass = job_settings["mainClass"]
 
 # check dag inputs:
 # - cluster and image : should not be empty
@@ -70,8 +71,6 @@ def check_dag_input(cluster_id, image, namespace):
     finally:
         print("input checked") 
        
-
-
 
 dag = DAG(
     dag_id='spark_generic_template_job',
@@ -104,7 +103,7 @@ SparkKubernetesOperator(
     task_id='spark_pi_submit',
     namespace=namespace,
     kubernetes_conn_id=cluster,
-    application_file=open(str(dags_home)+"/sparkApplications/SparkPi.yaml").read(), #known bug
+    application_file=open(str(dags_home)+"/sparkApplications/SparkJobTemplate.yaml").read(), #known bug
     do_xcom_push=True,
     dag=dag
 )

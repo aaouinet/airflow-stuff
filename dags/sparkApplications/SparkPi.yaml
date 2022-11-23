@@ -1,4 +1,6 @@
-{% set job_image = var.value.get('image', 'fallback') %}
+{% set job_image = var.value.get('image', 'spark:3.1.1') %}
+{% set mainClass = var.value.get('mainClass', 'org.apache.spark.examples.SparkPi') %}
+{% set mainApplicationFile = var.value.get('mainApplicationFile', 'local:///usr/lib/spark/examples/jars/spark-examples.jar') %}
 apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
@@ -10,8 +12,8 @@ spec:
   # azure image: airflowjarvis.azurecr.io/spark:3.3.1-test
   image: "{{ job_image }}"
   imagePullPolicy: Always
-  mainClass: org.apache.spark.examples.SparkPi
-  mainApplicationFile: "local:///usr/lib/spark/examples/jars/spark-examples.jar"
+  mainClass: "{{ mainClass }}"
+  mainApplicationFile: "{{ mainApplicationFile }}" 
   sparkVersion: "3.3.1"
   restartPolicy:
     type: Never

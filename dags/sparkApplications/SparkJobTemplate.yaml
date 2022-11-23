@@ -1,36 +1,32 @@
+{% set application_name = var.value.get('application_name', 'spark-job') %}
+{% set job_image = var.value.get('image', 'spark:3.1.1') %}
+{% set mainClass = var.value.get('mainClass', 'org.apache.spark.examples.SparkPi') %}
+{% set mainApplicationFile = var.value.get('mainApplicationFile', 'local:///usr/lib/spark/examples/jars/spark-examples.jar') %}
 apiVersion: "sparkoperator.k8s.io/v1beta2"
 kind: SparkApplication
 metadata:
-  name: spark-sample
+  name: "{{ application_name }}"
 spec:
   type: Scala
   mode: cluster
   # aws image: 318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test
   # azure image: airflowjarvis.azurecr.io/spark:3.3.1-test
-  image: "{{ var.json.job_configuaration.image }}"
+  image: "{{ job_image }}"
   imagePullPolicy: Always
-  mainClass: "{{ var.json.job_configuaration.mainClass }}"
-  mainApplicationFile: "{{ var.json.job_configuaration.mainApplicationFile }}"
-  sparkVersion: "3.3.1"
+  mainClass: "{{ mainClass }}"
+  mainApplicationFile: "{{ mainApplicationFile }}" 
+  sparkVersion: "{{ sparkVersion |default("3.3.1") }}"
   restartPolicy:
     type: Never
   driver:
-    cores: "{{ var.json.job_configuaration.driver.cores }}"
-    memory: "512m"
+    cores: {{ driver_cores |default(1) }}
+    memory: "{{ driver_memory |default("512m") }}"
     labels:
       version: 3.3.1
     serviceAccount: spark
-    cores: 1
-    memory: "512m"
-    labels:
-      version: 3.3.1
   executor:
-    cores: 1
-    memory: "512m"
+    cores: {{ executor_cores |default(1) }}
+    memory: "{{ executor_memory |default("512m") }}"
     labels:
-      version: 3.3.1
+      version: "{{ sparkVersion |default("3.3.1") }}"
     serviceAccount: spark
-    cores: 1
-    memory: "512m"
-    labels:
-      version: 3.3.1
