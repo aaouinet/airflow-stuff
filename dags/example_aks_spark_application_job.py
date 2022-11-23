@@ -24,6 +24,11 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.utils.dates import days_ago
 
+from airflow.models import Variable
+import json
+
+# get dags home (to do: get from dag_run context)
+dags_home =  Variable.get("dags_home")
 
 with DAG(
     dag_id='spark_application_aks_pi_job',
@@ -39,7 +44,7 @@ with DAG(
         task_id='spark_pi_submit',
         namespace="spark-operator",
         kubernetes_conn_id="aks_poc_cluster",
-        application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #officially know bug
+        application_file=open(str(dags_home)+"/sparkApplications/SparkPi.yaml").read(), #officially know bug
         do_xcom_push=True,
         dag=dag
         )

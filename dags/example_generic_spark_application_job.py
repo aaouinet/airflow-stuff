@@ -26,6 +26,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 from airflow.models import Variable
 import json
+import yaml
 
 
 # Get values from dag run configuration
@@ -33,14 +34,17 @@ import json
 # namespace="{{dag_run.conf['namespace']}}"
 # image="{{dag_run.conf['image']}}"
 
-job_settings = Variable.get("job_settings")
+job_settings = yaml.safe_load(Variable.get("job_json_settings"))
+
+# get dags home (to do: get from dag_run context)
+dags_home =  Variable.get("dags_home")
 
 print("##### job settings")
 print (job_settings)
 
-cluster = job_settings.cluster
-image = job_settings.image
-namespace = job_settings.namespace
+cluster = job_settings["cluster"]
+image = job_settings["image"]
+namespace = job_settings["namespace"]
 
 
 # check dag inputs:
@@ -100,7 +104,7 @@ SparkKubernetesOperator(
     task_id='spark_pi_submit',
     namespace=namespace,
     kubernetes_conn_id=cluster,
-    application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/SparkPi.yaml").read(), #known bug
+    application_file=open(str(dags_home)+"/sparkApplications/SparkPi.yaml").read(), #known bug
     do_xcom_push=True,
     dag=dag
 )

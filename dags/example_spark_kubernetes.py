@@ -36,6 +36,8 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 
+from airflow.models import Variable
+import json
 # [END import_module]
 
 
@@ -44,6 +46,9 @@ from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKube
 
 ENV_ID = '1'
 DAG_ID = "spark_pi"
+
+# get dags home (to do: get from dag_run context)
+dags_home =  Variable.get("dags_home")
 
 with DAG(
     DAG_ID,
@@ -58,7 +63,7 @@ with DAG(
         task_id='spark_pi_submit',
         namespace="default",
         kubernetes_conn_id="eks_poc_cluster",
-        application_file=open("/opt/airflow/dags/repo/dags/sparkApplications/example_spark_kubernetes_spark_pi.yaml").read(), #officially know bug
+        application_file=open(str(dags_home)+"/sparkApplications/example_spark_kubernetes_spark_pi.yaml").read(), #officially know bug
         do_xcom_push=True,
         dag=dag,
     )
