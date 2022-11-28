@@ -86,7 +86,7 @@ export AIRFLOW_HOME=/mnt/c/users/YOURNAME/airflowhome
 
 # create admin user 
 airflow users create \
-    --username admin \
+    --username abdel \
     --firstname Peter \
     --lastname Parker \
     --role Admin \
