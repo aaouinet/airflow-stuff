@@ -105,7 +105,8 @@ check_dag_input = PythonOperator(
     dag=dag
 )
 
-# Step 2
+   
+# spark kubernetes generic job
 run_saprk_job = CustomSparkKubernetesOperator(
     task_id='spark_job_submit',
     namespace="{{ params.namespace }}",
@@ -118,14 +119,15 @@ run_saprk_job = CustomSparkKubernetesOperator(
     dag=dag
 )
 
-# Step 3
+# spark kubernetes monitoring job
 monitor_spark_job = CustomSparkKubernetesSensor(
     task_id='spark_pi_monitor',
     namespace="{{ params.namespace }}",
-    kubernetes_conn_id="aks_poc_cluster",
+    kubernetes_conn_id="{{ params.cluster }}",
     application_name="{{ task_instance.xcom_pull(task_ids='spark_job_submit')['metadata']['name'] }}",
     dag=dag,
 )
+
 check_dag_input >> run_saprk_job >> monitor_spark_job
 
 # [END SparkKubernetesOperator_DAG]

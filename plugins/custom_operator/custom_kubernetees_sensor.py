@@ -47,7 +47,7 @@ class CustomSparkKubernetesSensor(BaseSensorOperator):
     :param api_version: kubernetes api version of sparkApplication
     """
 
-    template_fields: Sequence[str] = ("application_name", "namespace", "kubernetes_conn_id")
+    template_fields: Sequence[str] = ( "kubernetes_conn_id", "application_name", "namespace")
     FAILURE_STATES = ("FAILED", "UNKNOWN")
     SUCCESS_STATES = ("COMPLETED",)
 
@@ -103,7 +103,8 @@ class CustomSparkKubernetesSensor(BaseSensorOperator):
 
     def poke(self, context: Context) -> bool:
         self.log.info("Poking: %s", self.application_name)
-        response = self.hook.get_custom_object(
+        hook = KubernetesHook(conn_id=self.kubernetes_conn_id)
+        response = hook.get_custom_object(
             group=self.api_group,
             version=self.api_version,
             plural="sparkapplications",
