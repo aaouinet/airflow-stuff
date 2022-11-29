@@ -86,9 +86,10 @@ dag = DAG(
     schedule_interval="@once",
     tags=["spark_application", "example"],
     params={
-        "cluster": "aks_poc_cluster",
+        "cluster": "iy2lb99tr6pd1fepo2xxiyyau",
+        "spark_version": "3.3.1",
         "namespace": "spark",
-        "image": "airflowjarvis.azurecr.io/spark:3.3.1-test"
+        "image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test"
     },
     catchup=False
 ) 
