@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# a simple way to parse shell script arguments
+# a simple way to run spark on k8s airflow dags
 # 
 # please edit and use to your hearts content
 # 
@@ -18,10 +18,10 @@ function usage()
     echo ""
     echo "./job-submit.sh"
     echo "\t-h --help"
-    echo "\t-t --cluster-type=${cluster_type}";
-    echo "\t-c --cluster-id=${cluster_id}";
-    echo "\t-v --spark-version=${spark_version}";
-    echo "\t-f --configuration-file=${configuration_file}";
+    echo "\t-t --cluster_type=${cluster_type}";
+    echo "\t-c --cluster_id=${cluster_id}";
+    echo "\t-v --spark_version=${spark_version}";
+    echo "\t-f --configuration_file=${configuration_file}";
     echo ""
 }
 
@@ -71,12 +71,6 @@ render_template() {
 }
 
 
-# expand variables + preserve formatting
-render_template() {
- wsl
-
-}
-
 # run airflow spark k8s dag
 run_spark_k8s_dag() {
  rendred_configuration_file=$1
@@ -93,7 +87,7 @@ run_spark_k8s_dag() {
 run_spark_emr_dag() {
  rendred_configuration_file=$1
  curl -X POST \
-   http://localhost:8080/api/v1/dags/emr_generic_job/dagRuns  \
+   http://localhost:8080/api/v1/dags/spark_emr_generic_job/dagRuns  \
    -H 'Cache-Control: no-cache'  \
    -H 'Content-Type: application/json'  \
    --user $airflowuser:$airflowpassword   \
@@ -101,9 +95,29 @@ run_spark_emr_dag() {
 }
 
 
-render_template application_config.json > rendred_application_config.json
+# main
 
-run_spark_k8s_dag rendred_application_config.json
+case ${cluster_type} in
+    "aks" )
+        container_repo="airflowjarvis.azurecr.io"
+        render_template application_config.json > rendred_application_config.json
+        run_spark_k8s_dag rendred_application_config.json        
+        ;;
+    "eks" )
+        container_repo="318897785936.dkr.ecr.eu-west-1.amazonaws.com"
+        render_template application_config.json > rendred_application_config.json
+        run_spark_k8s_dag rendred_application_config.json        
+        ;;
+    "emr" )
+        render_template application_config.json > rendred_application_config.json
+        run_spark_emr_dag rendred_application_config.json        
+        ;;
+esac
+
+
+
+
+
 
 
 

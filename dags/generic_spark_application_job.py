@@ -17,20 +17,15 @@
 """
 This is an example dag for an Amazon EMR on EKS Spark job.
 """
-import os
 from datetime import timedelta
 
 from airflow import DAG
-from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
-from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 from airflow.models import Variable
-from airflow.configuration import conf
 from custom_operator.custom_spark_kubernetes import CustomSparkKubernetesOperator
 from custom_operator.custom_kubernetees_sensor import CustomSparkKubernetesSensor
-
-import json
+import sys
 import yaml
 
 
