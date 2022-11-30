@@ -50,7 +50,7 @@ CONFIGURATION_OVERRIDES_ARG = {
         {
           "classification": "spark-defaults", 
           "properties": {
-            "spark.kubernetes.container.image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test",
+            "spark.kubernetes.container.image": "<account id>.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test",
             "spark.driver.core": "1",
             "spark.driver.memory": "512m",
             "spark.executor.cores": "1",
@@ -61,7 +61,7 @@ CONFIGURATION_OVERRIDES_ARG = {
       ], 
       "monitoringConfiguration": {
         "s3MonitoringConfiguration": {
-          "logUri": "s3://emr-on-eks-nvme-318897785936-eu-west-1/logs/airflow"
+          "logUri": "s3://emr-on-eks-nvme-<account id>-eu-west-1/logs/airflow"
         }
       }
 }
@@ -111,7 +111,7 @@ dag = DAG(
         "cluster": "iy2lb99tr6pd1fepo2xxiyyau",
         "spark_version": "3.3.1",
         "namespace": "emr",
-        "image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test"
+        "image": "<account id>.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test"
     },
     catchup=False
 )

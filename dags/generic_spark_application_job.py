@@ -81,10 +81,10 @@ dag = DAG(
     schedule_interval="@once",
     tags=["spark_application", "example"],
     params={
-        "cluster": "iy2lb99tr6pd1fepo2xxiyyau",
+        "cluster": "eks_poc_cluster",
         "spark_version": "3.3.1",
         "namespace": "spark",
-        "image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test"
+        "image": "<account id>.dkr.ecr.eu-west-1.amazonaws.com/spark:3.3.1-test"
     },
     catchup=False
 ) 

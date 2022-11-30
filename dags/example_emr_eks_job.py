@@ -26,7 +26,7 @@ from airflow.utils.dates import days_ago
 
 # [START howto_operator_emr_eks_env_variables]
 VIRTUAL_CLUSTER_ID = "iy2lb99tr6pd1fepo2xxiyyau"
-JOB_ROLE_ARN = "arn:aws:iam::318897785936:role/emr-on-eks-nvme-execution-role"
+JOB_ROLE_ARN = "arn:aws:iam::<account id>:role/emr-on-eks-nvme-execution-role"
 # [END howto_operator_emr_eks_env_variables]""
 
 
@@ -43,7 +43,7 @@ CONFIGURATION_OVERRIDES_ARG = {
         {
           "classification": "spark-defaults", 
           "properties": {
-            "spark.kubernetes.container.image": "318897785936.dkr.ecr.eu-west-1.amazonaws.com/eks-spark-benchmark:emr6.8",
+            "spark.kubernetes.container.image": "<account id>.dkr.ecr.eu-west-1.amazonaws.com/eks-spark-benchmark:emr6.8",
             "spark.driver.core": "1",
             "spark.driver.memory": "512m",
             "spark.executor.cores": "1",
@@ -54,7 +54,7 @@ CONFIGURATION_OVERRIDES_ARG = {
       ], 
       "monitoringConfiguration": {
         "s3MonitoringConfiguration": {
-          "logUri": "s3://emr-on-eks-nvme-318897785936-eu-west-1/logs/airflow"
+          "logUri": "s3://emr-on-eks-nvme-<account id>-eu-west-1/logs/airflow"
         }
       }
 }

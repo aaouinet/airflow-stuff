@@ -3,8 +3,6 @@
 #
 # a simple way to run spark on k8s airflow dags
 # 
-# please edit and use to your hearts content
-# 
 
 cluster_type="[aks | eks | emr]"
 cluster_id="cluster_id";
