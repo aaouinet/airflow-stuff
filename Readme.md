@@ -175,4 +175,5 @@ cd <this repo>
 
 # access the UI on localhost:8080 in your browser to see dag logs
 
+Join the Event<https://06d450f2e2d24342b7f5b16522145547.svc.dynamics.com/EvtMgmt/api/v2.0/checkin/stream?sessionRegistrationId=SR%209G9F75YVT2QAWWLN92L6GWJTVC&redirectUri=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F19%253ameeting_ODg0YTU0M2MtMzU0Yy00NzQ1LWJiOWYtOGYyOTQxNDk2MDYw%2540thread.v2%2F0%3Fcontext%3D%257b%2522Tid%2522%253a%252272f988bf-86f1-41af-91ab-2d7cd011db47%2522%252c%2522Oid%2522%253a%2522c5825cfd-a05b-4288-8c3d-cec2cf365dd6%2522%257d>
 ```
